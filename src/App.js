@@ -3,13 +3,21 @@ import './App.css';
 import styled from 'styled-components'
 import { useEffect } from 'react';
 import sha256 from 'sha256';
-// import Login from './components/Login';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { auth, provider } from './firebase'
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
 
 function App() {
+
+  console.log(auth)
 
   const [userId, setUserID] = useState("");
   const [password, setPassword] = useState("");
   const [passwordHash, setPasswordHash] = useState("")
+  const [userName, setUserName] = useState("")
+  const [userEmail, setUserEmail] = useState("")
+  const [profileImage, setProfileImage] = useState("")
 
 
   useEffect(() => {
@@ -17,7 +25,28 @@ function App() {
   }, [password])
 
   const googleLoginHandler = () => {
-
+    try {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          console.log(result.user)
+          setUserName(result.user.displayName)
+          setUserEmail(result.user.email)
+          setProfileImage(result.user.photoURL)
+          // alert('Logged In  Successfully')
+          toast.success("Logged In", {
+            position: toast.POSITION.TOP_CENTER
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    } catch (error) {
+      console.log(error)
+      toast.error("Login failed!", {
+        position: toast.POSITION.TOP_CENTER
+      });
+    }
+    
   }
 
 
@@ -25,25 +54,28 @@ function App() {
 
   }
 
-  console.log("test", userId)
-  console.log("pass test", password)
-  console.log("pass test", passwordHash)
+  // console.log("test", userId)
+  // console.log("pass test", password)
+  // console.log("pass test", passwordHash)
+
+  console.log("name : ", userName)
+  console.log("email : ", userEmail)
 
   return (
     <div className="App">
       <Container>
         <div className='left'>
           <div className='text-container'>
-              <div className='logo'>
-                  <img src='images/app-logo.png'/>
-              </div>
-              <div className='game-text'>
-                <p>Treasure Hunt</p>
-              </div>
+            <div className='logo'>
+              <img src='images/app-logo.png' />
+            </div>
+            <div className='game-text'>
+              <p>Treasure Hunt</p>
+            </div>
           </div>
           <div className='made'>
-                <p>Made by</p>
-              </div>
+            <p>Made by</p>
+          </div>
         </div>
         <div className='right'>
           <LoginContainer>
@@ -73,6 +105,10 @@ function App() {
             </div>
           </LoginContainer>
         </div>
+        <ToastContainer 
+          autoClose={1000}
+          hideProgressBar={true}
+        />
       </Container>
     </div>
   );
