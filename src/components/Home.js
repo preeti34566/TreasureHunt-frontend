@@ -150,7 +150,8 @@ export default Home
 const Container = styled.div`
     /* margin-top: 4.2rem; */
     height: 100vh;
-    background-color: lightblue;
+    /* background-color: lightblue; */
+    background-color: #f7f7f8;
     display: flex;
     flex-direction: column;
     padding-top: 4.2rem;
@@ -172,7 +173,8 @@ const HomeContainer = styled.div`
 
       .menu-list {
         height: 3rem;
-        border: 1px solid black;
+        /* border: 1px solid black; */
+        background-color: black;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -185,7 +187,7 @@ const HomeContainer = styled.div`
           font-family: poppins;
           font-weight: 500;
           font-size: 18px;
-          color: black;
+          color: #ffffffea;
         }
 
         &:hover {

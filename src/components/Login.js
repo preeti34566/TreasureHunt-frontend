@@ -36,10 +36,13 @@ function Login() {
           setUserName(result.user.displayName)
           setUserEmail(result.user.email)
           setProfileImage(result.user.photoURL)
+          console.log("logged in")
           toast.success("Logged In", {
             position: toast.POSITION.TOP_CENTER
           });
-          navigate('/game')
+          setTimeout(() => {
+            navigate('/home')
+          },2500)
         })
         .catch((err) => {
           console.log(err);
@@ -64,6 +67,7 @@ function Login() {
 
   console.log("name : ", userName)
   console.log("email : ", userEmail)
+  console.log("photo : ", profileImage)
 
   return (
     <div className>
