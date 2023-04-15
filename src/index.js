@@ -8,21 +8,62 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 import Login from './components/Login';
+import Home from './components/Home';
+import ErrorPage from './components/ErrorPage';
 import Game from './components/Game';
+import Navbar from './components/Navbar';
+import Account from './components/Account';
+import Statistics from './components/Statistics';
+import LeaderBoard from './components/LeaderBoard';
+import Admin from './components/Admin';
 
 
 const router = createBrowserRouter([
   {
-    path:'/',
+    path: '/',
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
-      {index:true, element: <Login />},
+      { index: true, element: <Login /> },
       {
-        path:'/game',
-        element: <Game />
+        path: '/home',
+        element: (
+          <>
+            <Navbar />
+            <Home />
+          </>
+
+        ),
+        children: [
+          { index: true },
+          {
+            path: '/home/game',
+            element: <Game />
+          },
+          {
+            path: '/home/account',
+            element: <Account />
+          },
+          {
+            path: '/home/statistics',
+            element: <Statistics />
+          },
+          {
+            path: '/home/leaderboard',
+            element: <LeaderBoard />
+          },
+          {
+            path: '/home/admin',
+            element: <Admin />
+          },
+        ]
       }
     ]
-  }
+  },
+  // {
+  //   path:'/home/game',
+  //   element:  <Game />,
+  // }
 ])
 
 
@@ -30,7 +71,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
