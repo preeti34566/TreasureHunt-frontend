@@ -14,56 +14,66 @@ function App() {
 
   useEffect(() => {
     setPasswordHash(sha256(password))
-  },[password])
+  }, [password])
 
   const googleLoginHandler = () => {
 
   }
 
 
-  const userLoginHandler =  () => {
+  const userLoginHandler = () => {
 
   }
 
-  console.log("test",userId)
-  console.log("pass test",password)
-  console.log("pass test",passwordHash)
+  console.log("test", userId)
+  console.log("pass test", password)
+  console.log("pass test", passwordHash)
 
   return (
     <div className="App">
-        <Container>
-            <div className='left'>
-              left
+      <Container>
+        <div className='left'>
+          <div className='text-container'>
+              <div className='logo'>
+                  <img src='images/app-logo.png'/>
+              </div>
+              <div className='game-text'>
+                <p>Treasure Hunt</p>
+              </div>
+          </div>
+          <div className='made'>
+                <p>Made by</p>
+              </div>
+        </div>
+        <div className='right'>
+          <LoginContainer>
+            <input className='usrId'
+              type='text'
+              placeholder='User ID'
+              onChange={(event) => {
+                setUserID(event.target.value)
+              }}
+            />
+            <input className='pswrd'
+              type='password'
+              placeholder='Password'
+              onChange={(event) => {
+                setPassword(event.target.value)
+              }}
+            />
+            <div className='login-btn' onClick={userLoginHandler}>Login</div>
+            <div className='line'></div>
+            <div className='google-login' onClick={googleLoginHandler}>
+              <div className='text'>
+                <p>Continue with google</p>
+              </div>
+              <div className='google-logo'>
+                <img src="/images/google.png" />
+              </div>
             </div>
-            <div className='right'>
-              <LoginContainer>
-                  <input className='usrId'
-                    type='text'
-                    placeholder='User ID'
-                    onChange={(event) => {
-                      setUserID(event.target.value)
-                    }}
-                  />
-                  <input className='pswrd'
-                    type='password'
-                    placeholder='Password'
-                    onChange={(event) => {
-                      setPassword(event.target.value)
-                    }}
-                  />
-                  <div className='login-btn' onClick={userLoginHandler}>Login</div>
-                  <div className='line'></div>
-                  <div className='google-login' onClick={googleLoginHandler}>
-                    <div className='text'>
-                      <p>Continue with google</p>
-                    </div>
-                    <div className='google-logo'>
-                        <img src="/images/google.png"/>
-                    </div>
-                  </div>
-              </LoginContainer>
-            </div>
-        </Container>
+          </LoginContainer>
+        </div>
+      </Container>
     </div>
   );
 }
@@ -78,6 +88,8 @@ const Container = styled.div`
   display: flex;
   
   .left {
+    position: relative;
+
     flex: 1.3;
     height: 100%;
     background-color: black;
@@ -85,6 +97,69 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     color: white;
+
+    .made {
+        bottom: 2.5rem;
+        position: absolute;
+        height: 1.5rem;
+        width: 15rem;
+        display: flex;
+        justify-content:center;
+        align-items: center;
+
+        p {
+          margin: 0;
+        }
+    }
+
+    .text-container {
+      /* border: 1px solid white; */
+      margin-top: -15rem;
+      height: 10rem;
+      width: 43rem;
+      display: flex;
+      justify-content: start;
+      overflow: hidden;
+
+     
+
+      .logo { 
+        width: 10rem;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        /* background-color: lightblue; */
+        img {
+          width: 7rem;
+        }
+      }
+
+      .game-text {
+        /* background-color: lightpink; */
+        flex:2;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        /* background-color: lightblue; */
+        p {
+          margin-top: 25px;
+          margin-left: -1rem;
+          font-family: poppins;
+          font-size: 70px;
+          font-weight: 700;
+          color: #ffffffd9;
+        }
+      }
+      /* p {
+        font-family: poppins;
+        font-weight: 600;
+        font-size:70px;
+      } */
+
+      
+
+     
+    }
   }
 
   .right {
