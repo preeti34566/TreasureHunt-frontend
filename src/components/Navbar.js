@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { auth } from '../firebase'
 import { signOut } from 'firebase/auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../AuthContext';
 
 
 function Navbar() {
 
+    const { setIsAuthenticated, isAuthenticated } = useContext(AuthContext)
     const navigate = useNavigate();
 
     const homeHandler = () => {
@@ -22,6 +24,7 @@ function Navbar() {
                     toast.success("Logged  Out", {
                         position: toast.POSITION.TOP_CENTER
                     });
+                    setIsAuthenticated(false)
                     setTimeout(() => {
                         navigate('/')
                     }, 2500)
@@ -51,7 +54,7 @@ function Navbar() {
             </div>
             <div className='center'>
                 <div className='home-btn' onClick={homeHandler}>
-                    <img src="/images/home.png"/>
+                    <img src="/images/home.png" />
                 </div>
             </div>
             <div className='right'>
@@ -79,7 +82,6 @@ const Container = styled.div`
     color: #ffffffe6;
 
     .left {
-        /* flex: 1; */
         width: 20rem;
         margin-left: 2rem;
       

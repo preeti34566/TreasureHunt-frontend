@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import sha256 from 'sha256';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ClipLoader from "react-spinners/ClipLoader";
 import { auth, provider } from '../firebase'
 import copy from 'copy-to-clipboard';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
@@ -15,44 +16,14 @@ import { nanoid } from 'nanoid'
 
 function Login() {
 
-
-  //   const userId = '123456'; // replace with actual user ID
-
-  // fetch('/users/' + userId)
-  //   .then(response => {
-  //     if (!response.ok) {
-  //       // Handle HTTP error response
-  //       throw new Error(response.statusText);
-  //     }
-  //     return response.json();
-  //   })
-  //   .then(data => {
-  //     // Handle successful response
-  //     console.log(data);
-  //     // TODO: display user data on page
-  //   })
-  //   .catch(error => {
-  //     // Handle network or other error
-  //     console.error('Error fetching user data:', error);
-  //     // TODO: display error message to user
-  //   });
-
-  // try your backend
-
-
   const navigate = useNavigate();
 
-  const { setIsAuthenticated } = useContext(AuthContext)
+  const { setIsAuthenticated, isAuthenticated } = useContext(AuthContext)
 
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordHash, setPasswordHash] = useState("")
- 
+  const [isLoading, setIsLoading] = useState(false);
 
-
-  useEffect(() => {
-    setPasswordHash(sha256(password))
-  }, [password])
 
   const googleLoginHandler = async () => {
     try {
@@ -65,17 +36,14 @@ function Login() {
             userId: (result.user.email).substring(0, (result.user.email).indexOf('@')),
           }
 
+          registerUser(userData)
+
           setIsAuthenticated(true);
 
-          registerUser(userData)
 
           toast.success("Logged In", {
             position: toast.POSITION.TOP_CENTER
           });
-
-          setTimeout(() => {
-            navigate('/home')
-          }, 2500)
         })
         .catch((err) => {
           console.log(err);
@@ -90,16 +58,10 @@ function Login() {
 
   }
 
-  // on login by google register user to database
+  // on login by google register player to database
   const registerUser = async (props) => {
-
     let pass = nanoid()
-
-    // console.log('password is : ', pass.substring(0, 5))
-
     let sha = sha256(pass.substring(0, 5));
-
-
     let userData = {
       name: props.name,
       pswrdHash: sha,
@@ -107,17 +69,15 @@ function Login() {
       imageurl: props.imageurl,
       userId: props.userId,
     }
-
-
     try {
       await fetch('http://localhost:8080/addUser', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then((response) => response.json())
+        method: 'POST',
+        body: JSON.stringify(userData),
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+        .then((response) => response.json())
         .then((data) => {
           showAlert(pass.substring(0, 5))
         })
@@ -139,24 +99,73 @@ function Login() {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Copy',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          copy(password);
-        }
-      })
+    }).then((result) => {
+      if (result.isConfirmed) {
+        copy(password);
+      }
+    })
   }
 
- 
 
-  const userLoginHandler = () => {
-    // take userId and password hash it 
-    //anubhav11697@gmail.com
+
+  const userLoginHandler = async (event) => {
+    setIsLoading(true);
+    event.preventDefault()
+    let hash = sha256(password)
+
+    try {
+      await fetch('http://localhost:8080/getUserDetail/' + userID)
+        .then(response => {
+          if (!response.ok) {
+            // Handle HTTP error response
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Handle successful response
+          if (data.userId == "") {
+            toast.error("Player Id not found!", {
+              position: toast.POSITION.TOP_CENTER
+            });
+            setIsLoading(false)
+            return
+          } else {
+            if (hash === data.pswrdHash) {
+
+              toast.success("Logged In", {
+                position: toast.POSITION.TOP_CENTER
+              });
+
+              setIsAuthenticated(true);
+              setIsLoading(false)
+            } else {
+              toast.error("Wrong Password!", {
+                position: toast.POSITION.TOP_CENTER
+              });
+              setIsLoading(false)
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+          setIsLoading(false)
+        });
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    }
+
+
   }
 
-  const navigateToHome = () => {
-
-  }
-
+  useEffect(()=>{
+      if(isAuthenticated){
+        setTimeout(() => {
+          navigate('/home')
+        }, 2500)
+      }
+  },[isAuthenticated])
 
   return (
     <div className>
@@ -178,21 +187,32 @@ function Login() {
           <LoginContainer>
             <input className='usrId'
               type='text'
-              placeholder='User ID'
+              placeholder='Player ID'
               onChange={(event) => {
                 setUserID(event.target.value)
               }}
               required
+              autoComplete='on'
             />
             <input className='pswrd'
               type='password'
+              id=''
               placeholder='Password'
               onChange={(event) => {
                 setPassword(event.target.value)
               }}
               required
             />
-            <div className='login-btn' onClick={userLoginHandler}>Login</div>
+            <div className='login-btn' onClick={userLoginHandler}>
+              {!isLoading &&
+                <p style={{
+                  marginTop: '16px'
+                }}>Login</p>
+              }
+              {isLoading &&
+                <ClipLoader color="#ffffff" size={16} />
+              }
+            </div>
             <div className='line'></div>
             <div className='google-login' onClick={googleLoginHandler}>
               <div className='text'>
