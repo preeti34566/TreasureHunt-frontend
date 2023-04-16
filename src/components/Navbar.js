@@ -38,19 +38,21 @@ function Navbar() {
         <Container>
             <div className='left'>
                 <div className='image-div'>
-                    <img src="https://lh3.googleusercontent.com/a/AGNmyxak-YKjWnm_ECv_KrKujTdkNhcjNkgGL9-ZTbNOHg=s96-c" />
+                    <img src="/images/girl.png" />
                 </div>
                 <div className='detail-div'>
                     <div className='usrId'>
-                        <p>anubhav11697</p>
+                        <p>preeti1289</p>
                     </div>
                     <div className='name'>
-                        <p>Anubhav Kumar</p>
+                        <p>Preeti Kumari</p>
                     </div>
                 </div>
             </div>
             <div className='center'>
-                {/* center */}
+                <div className='home-btn' onClick={homeHandler}>
+                    <img src="/images/home.png"/>
+                </div>
             </div>
             <div className='right'>
                 <div className='logout-btn' onClick={logoutHandler}>Logout</div>
@@ -144,8 +146,22 @@ const Container = styled.div`
 
     .center {
         flex: 4;
-        /* background-color: lightpink; */
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .home-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            img {
+                width: 1.7rem;
+                height: 1.7rem;
+            }
+        }
     }
 
     .right {

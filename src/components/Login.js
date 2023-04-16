@@ -1,73 +1,162 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import Swal from 'sweetalert2'
 import styled from 'styled-components'
 import { useEffect } from 'react';
 import sha256 from 'sha256';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { auth, provider } from '../firebase'
+import copy from 'copy-to-clipboard';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom';
-
+import { AuthContext } from '../AuthContext';
+import { nanoid } from 'nanoid'
 
 
 function Login() {
 
-  console.log(auth)
+
+  //   const userId = '123456'; // replace with actual user ID
+
+  // fetch('/users/' + userId)
+  //   .then(response => {
+  //     if (!response.ok) {
+  //       // Handle HTTP error response
+  //       throw new Error(response.statusText);
+  //     }
+  //     return response.json();
+  //   })
+  //   .then(data => {
+  //     // Handle successful response
+  //     console.log(data);
+  //     // TODO: display user data on page
+  //   })
+  //   .catch(error => {
+  //     // Handle network or other error
+  //     console.error('Error fetching user data:', error);
+  //     // TODO: display error message to user
+  //   });
+
+  // try your backend
+
 
   const navigate = useNavigate();
 
+  const { setIsAuthenticated } = useContext(AuthContext)
 
-  const [userId, setUserID] = useState("");
+  const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
   const [passwordHash, setPasswordHash] = useState("")
-  const [userName, setUserName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-  const [profileImage, setProfileImage] = useState("")
+ 
 
 
   useEffect(() => {
     setPasswordHash(sha256(password))
   }, [password])
 
-  const googleLoginHandler = () => {
+  const googleLoginHandler = async () => {
     try {
       signInWithPopup(auth, provider)
         .then((result) => {
-          setUserName(result.user.displayName)
-          setUserEmail(result.user.email)
-          setProfileImage(result.user.photoURL)
-          console.log("logged in")
+          let userData = {
+            name: result.user.displayName,
+            email: result.user.email,
+            imageurl: result.user.photoURL,
+            userId: (result.user.email).substring(0, (result.user.email).indexOf('@')),
+          }
+
+          setIsAuthenticated(true);
+
+          registerUser(userData)
+
           toast.success("Logged In", {
             position: toast.POSITION.TOP_CENTER
           });
+
           setTimeout(() => {
             navigate('/home')
-          },2500)
+          }, 2500)
         })
         .catch((err) => {
           console.log(err);
         })
     } catch (error) {
       console.log(error)
+
       toast.error("Login failed!", {
         position: toast.POSITION.TOP_CENTER
       });
     }
-    
+
   }
 
+  // on login by google register user to database
+  const registerUser = async (props) => {
+
+    let pass = nanoid()
+
+    // console.log('password is : ', pass.substring(0, 5))
+
+    let sha = sha256(pass.substring(0, 5));
+
+
+    let userData = {
+      name: props.name,
+      pswrdHash: sha,
+      email: props.email,
+      imageurl: props.imageurl,
+      userId: props.userId,
+    }
+
+
+    try {
+      await fetch('http://localhost:8080/addUser', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then((response) => response.json())
+        .then((data) => {
+          showAlert(pass.substring(0, 5))
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    } catch (error) {
+      console.log('failed to register user')
+    }
+  }
+
+
+  function showAlert(password) {
+    Swal.fire({
+      title: password,
+      text: "Copy password you won't be able to do it later",
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Copy',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          copy(password);
+        }
+      })
+  }
+
+ 
 
   const userLoginHandler = () => {
+    // take userId and password hash it 
+    //anubhav11697@gmail.com
+  }
+
+  const navigateToHome = () => {
 
   }
 
-  // console.log("test", userId)
-  // console.log("pass test", password)
-  // console.log("pass test", passwordHash)
-
-  console.log("name : ", userName)
-  console.log("email : ", userEmail)
-  console.log("photo : ", profileImage)
 
   return (
     <div className>
@@ -82,7 +171,7 @@ function Login() {
             </div>
           </div>
           <div className='made'>
-            <p>Made by</p>
+            <p>Made by Preeti Kumari</p>
           </div>
         </div>
         <div className='right'>
@@ -93,6 +182,7 @@ function Login() {
               onChange={(event) => {
                 setUserID(event.target.value)
               }}
+              required
             />
             <input className='pswrd'
               type='password'
@@ -100,6 +190,7 @@ function Login() {
               onChange={(event) => {
                 setPassword(event.target.value)
               }}
+              required
             />
             <div className='login-btn' onClick={userLoginHandler}>Login</div>
             <div className='line'></div>
@@ -114,7 +205,7 @@ function Login() {
           </LoginContainer>
         </div>
         {/* <Outlet /> */}
-        <ToastContainer 
+        <ToastContainer
           autoClose={1000}
           hideProgressBar={true}
         />

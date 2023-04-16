@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
+  Route,
+  Redirect,
   RouterProvider,
+  Navigate,
+  Routes,
 } from 'react-router-dom'
 import Login from './components/Login';
 import Home from './components/Home';
@@ -16,6 +20,24 @@ import Account from './components/Account';
 import Statistics from './components/Statistics';
 import LeaderBoard from './components/LeaderBoard';
 import Admin from './components/Admin';
+import { AuthContext, AuthProvider } from './AuthContext';
+
+const AuthRoute = ({ component: Component, ...rest }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+  console.log(isAuthenticated);
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Navigate to={{ pathname: '/login', state: { from: props.location } }} />
+        )
+      }
+    />
+  );
+};
 
 
 const router = createBrowserRouter([
@@ -32,7 +54,6 @@ const router = createBrowserRouter([
             <Navbar />
             <Home />
           </>
-
         ),
         children: [
           { index: true },
@@ -60,10 +81,6 @@ const router = createBrowserRouter([
       }
     ]
   },
-  // {
-  //   path:'/home/game',
-  //   element:  <Game />,
-  // }
 ])
 
 
@@ -71,11 +88,14 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+        <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+
+
+
