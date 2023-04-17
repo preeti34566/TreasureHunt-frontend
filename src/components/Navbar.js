@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { auth } from '../firebase'
@@ -10,7 +10,13 @@ import { AuthContext } from '../AuthContext';
 
 function Navbar() {
 
-    const { setIsAuthenticated, isAuthenticated } = useContext(AuthContext)
+    const { setIsAuthenticated, isAuthenticated, playerId, setPlayerId  } = useContext(AuthContext)
+
+    const [playerName, setPlayerName] = useState("")
+    const [playerImage, setPlayerImage] = useState("")
+
+    console.log('pid : ',playerId)
+
     const navigate = useNavigate();
 
     const homeHandler = () => {
@@ -25,6 +31,7 @@ function Navbar() {
                         position: toast.POSITION.TOP_CENTER
                     });
                     setIsAuthenticated(false)
+                    setPlayerId("")
                     setTimeout(() => {
                         navigate('/')
                     }, 2500)
@@ -37,18 +44,53 @@ function Navbar() {
         }
     }
 
+    const fetchPlayerDetail = async () => {
+        try {
+            await fetch('http://localhost:8080/getUserDetail/' + playerId)
+              .then(response => {
+                if (!response.ok) {
+                  // Handle HTTP error response
+                  throw new Error(response.statusText);
+                }
+                return response.json();
+              })
+              .then(data => {
+                // Handle successful response
+                console.log(data)
+                setPlayerName(data.name)
+                setPlayerImage(data.imageUrl)
+                
+              })
+              .catch(error => {
+                console.error('Error fetching user data:', error);
+               
+              });
+          } catch (error) {
+            console.log(error)
+          }
+    }
+
+    useEffect(() => {
+        fetchPlayerDetail()
+    },[playerId])
+
+
+    console.log('name is : ', playerName)
+
     return (
         <Container>
             <div className='left'>
                 <div className='image-div'>
-                    <img src="/images/girl.png" />
+                    <img src={playerImage} />
                 </div>
                 <div className='detail-div'>
                     <div className='usrId'>
-                        <p>preeti1289</p>
+                        <p style={{
+                            color: '#31bfb1'
+                        }}>{playerId}</p>
                     </div>
                     <div className='name'>
-                        <p>Preeti Kumari</p>
+                        <p>{playerName}</p>
                     </div>
                 </div>
             </div>

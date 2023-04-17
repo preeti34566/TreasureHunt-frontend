@@ -18,7 +18,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { setIsAuthenticated, isAuthenticated } = useContext(AuthContext)
+  const { setIsAuthenticated, isAuthenticated, playerId, setPlayerId  } = useContext(AuthContext)
 
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +37,7 @@ function Login() {
           }
 
           registerUser(userData)
-
+          setPlayerId((result.user.email).substring(0, (result.user.email).indexOf('@')))
           setIsAuthenticated(true);
 
 
@@ -182,6 +182,9 @@ function Login() {
           <div className='made'>
             <p>Made by Preeti Kumari</p>
           </div>
+          <div className='bg'>
+            <img src="/images/bg-3.jpg"/>
+          </div>
         </div>
         <div className='right'>
           <LoginContainer>
@@ -190,6 +193,7 @@ function Login() {
               placeholder='Player ID'
               onChange={(event) => {
                 setUserID(event.target.value)
+                setPlayerId(event.target.value)
               }}
               required
               autoComplete='on'
@@ -239,7 +243,6 @@ export default Login;
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  background-color: lightgreen;
 
   display: flex;
   
@@ -248,11 +251,28 @@ const Container = styled.div`
 
     flex: 1.3;
     height: 100%;
-    background-color: black;
+    /* background-color: black; */
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+
+    .bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
 
     .made {
         bottom: 2.5rem;
@@ -265,45 +285,41 @@ const Container = styled.div`
 
         p {
           margin: 0;
+          color: black;
         }
     }
 
     .text-container {
-      /* border: 1px solid white; */
-      margin-top: -15rem;
+      z-index: 10;
       height: 10rem;
-      width: 43rem;
+      width: 49rem;
       display: flex;
       justify-content: start;
       overflow: hidden;
-
-     
 
       .logo { 
         width: 10rem;
         display: flex;
         justify-content: start;
         align-items: center;
-        /* background-color: lightblue; */
+
         img {
-          width: 7rem;
+          width: 8rem;
+          margin-top: -1.5rem;
         }
       }
 
       .game-text {
-        /* background-color: lightpink; */
         flex:2;
         display: flex;
         justify-content: start;
         align-items: center;
-        /* background-color: lightblue; */
         p {
-          margin-top: 25px;
           margin-left: -1rem;
           font-family: poppins;
-          font-size: 70px;
+          font-size: 80px;
           font-weight: 700;
-          color: #ffffffd9;
+          color: #000000e9;
         }
       }
       /* p {
@@ -329,6 +345,7 @@ const Container = styled.div`
 `
 
 const LoginContainer = styled.div`
+  margin-top: 6.5rem;
   /* border: 1px solid gray; */
   height: 30rem;
   width: 23rem;

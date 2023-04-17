@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Game from './Game';
@@ -6,9 +6,13 @@ import Account from './Account';
 import LeaderBoard from './LeaderBoard';
 import Statistics from './Statistics';
 import Admin from './Admin';
+import { AuthContext } from '../AuthContext';
 
 
 function Home() {
+
+  const { setIsAuthenticated, isAuthenticated, playerId, setPlayerId  } = useContext(AuthContext)
+
 
   const [isAdminLogin, setIsAdminLogin] = useState(false);
   const navigate = useNavigate();
@@ -27,6 +31,15 @@ function Home() {
       navigate('/home')
     }
   }, [location.pathname])
+
+  useEffect(() => {
+    // admin : devactpreeti
+    if(playerId === 'devactpreeti') {
+      setIsAdminLogin(true)
+    } else {
+      setIsAdminLogin(false)
+    }
+  },[playerId])
 
   const handleStartGame = () => {
     setShowMenu(false);
@@ -80,27 +93,7 @@ function Home() {
 
   return (
     <Container>
-      {/* <Navbar /> */}
       <HomeContainer>
-        {/* <div className='menu'>
-                <Link to="/home/game" className='menu-list'>
-                  <p>Start Game</p>
-                </Link>
-                <Link to="/home/statistics" className='menu-list'>
-                  <p>Statistics</p>
-                </Link>
-                <Link to="/home/leaderboard" className='menu-list'>
-                  <p>Leader Board</p>
-                </Link>
-                <Link to="/home/account" className='menu-list'>
-                  <p>Account</p>
-                </Link>
-                { isAdminLogin &&
-                    <Link to="/home/admin" className='menu-list'>
-                    <p>Admin</p>
-                  </Link>
-                }
-            </div> */}
         {showMenu && (
           <div className='menu'>
             <div className='menu-list' onClick={handleStartGame}>
@@ -137,6 +130,9 @@ function Home() {
         {!showMenu && isAdminActive && (
            <Admin />
         )}
+        <div className='bg'>
+          <img src="/images/bg-2.jpg"/>
+        </div>
       </HomeContainer>
     </Container>
   )
@@ -145,13 +141,8 @@ function Home() {
 export default Home
 
 
-
-
 const Container = styled.div`
-    /* margin-top: 4.2rem; */
     height: 100vh;
-    /* background-color: lightblue; */
-    background-color: #f7f7f8;
     display: flex;
     flex-direction: column;
     padding-top: 4.2rem;
@@ -163,8 +154,26 @@ const HomeContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+
+    .bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+      }
+    }
 
     .menu {
+      z-index: 5;
       width: 15rem;
       overflow: hidden;
       display: flex;
@@ -173,7 +182,6 @@ const HomeContainer = styled.div`
 
       .menu-list {
         height: 3rem;
-        /* border: 1px solid black; */
         background-color: black;
         display: flex;
         justify-content: center;
@@ -181,17 +189,19 @@ const HomeContainer = styled.div`
         border-radius: 4px;
         cursor: pointer;
         text-decoration: none;
+        color: #ffffffea;
+        transition: color 0.15s;
 
         p {
           margin: 0;
           font-family: poppins;
           font-weight: 500;
           font-size: 18px;
-          color: #ffffffea;
         }
 
         &:hover {
           opacity: 0.9;
+          color: #31bfb1;
         }
 
         &:active {
