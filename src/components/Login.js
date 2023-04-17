@@ -70,7 +70,7 @@ function Login() {
       userId: props.userId,
     }
     try {
-      await fetch('http://treasureh0nt.onrender.com/addUser', {
+      await fetch('https://treasureh0nt.onrender.com/addUser', {
         method: 'POST',
         body: JSON.stringify(userData),
         headers: {
@@ -114,7 +114,7 @@ function Login() {
     let hash = sha256(password)
 
     try {
-      await fetch('http://treasureh0nt.onrender.com/getUserDetail/' + userID)
+      await fetch('https://treasureh0nt.onrender.com/getUserDetail/' + userID)
         .then(response => {
           if (!response.ok) {
             // Handle HTTP error response
