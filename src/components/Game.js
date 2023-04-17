@@ -57,7 +57,7 @@ function Game() {
         <GameDescription>
           <h2>LEVEL 1 : Cross the cave</h2>
           <h3>Instruction to play the game</h3>
-          <h4>There are 4 caves only one will lead you to the key on the other side. You are given a riddle with clue to figure out which cave is safe to cross.</h4>
+          <h4>There are 4 caves only one will lead you to the key on the other side. You are given a riddle with clue to figure out which cave is safe to cross. User Arrow key to move the player.</h4>
           <p>RIDDLE: "I am a music label, heard around the nation,
             My reach is global, I need no introduction.
             If you look at my name, and the number of my fame,
