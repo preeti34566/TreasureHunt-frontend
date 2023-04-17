@@ -251,11 +251,12 @@ const Container = styled.div`
 
     flex: 1.3;
     height: 100%;
-    /* background-color: black; */
+    /* background-color: #000000ec; */
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+    border-right: 1px solid #00000038;
 
     .bg {
       position: absolute;
@@ -380,6 +381,7 @@ const LoginContainer = styled.div`
 
     &:hover {
       opacity: 0.9;
+      color: #31bfb1;
     }
 
     &:active {

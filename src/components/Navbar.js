@@ -220,7 +220,8 @@ const Container = styled.div`
         .logout-btn {
             width: 6rem;
             height: 2.2rem;
-            background-color: #fffffff3;
+            /* background-color: #fffffff3; */
+            background-color: #31bfb1;
             color: black;
             display: flex;
             justify-content: center;
