@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# Treasure Hunt | Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Backend code Repo : [Treasure Hunt Backend](https://github.com/preeti34566/TreasueHunt-backend)
 
-## Available Scripts
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Authentication using Firebase
+- Frontend routing using react-router-dom
+- Backend written in Golang
+- NoSQL Database by MongoDB
+- Application hosted on cloud, all up and running. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tools & Technologies
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React JS
+- react-router-dom
+- Javascript
+- Golang
+- HTML
+- CSS, Bootstrap, styled-components
+- Firebase Authentication
+- MongoDB, MongoDB compass, MongoDB Atlas
+- go-chi for backend routing
+- Render web services for hosting backend code
+- Vercel for Hosting frontend website
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Install the dependencies and devDependencies and start the server at localhost.
 
-### `npm run build`
+```sh
+git clone https://github.com/preeti34566/TreasureHunt-frontend.git
+cd TreasureHunt-frontend
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Screenshots
+![LoginPage](https://drive.google.com/file/d/1V271PfgOtteNilgJPoYTDLI81dGqstCy/view?usp=share_link)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
+MIT
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
