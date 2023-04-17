@@ -46,7 +46,7 @@ function Navbar() {
 
     const fetchPlayerDetail = async () => {
         try {
-            await fetch('http://localhost:8080/getUserDetail/' + playerId)
+            await fetch('http://treasureh0nt.onrender.com/getUserDetail/' + playerId)
               .then(response => {
                 if (!response.ok) {
                   // Handle HTTP error response

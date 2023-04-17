@@ -1,7 +1,4 @@
-import './App.css';
 import { Outlet } from 'react-router-dom';
-
-
 
 function App() {
 
@@ -15,10 +12,3 @@ function App() {
 
 export default App;
 
-// const Container = styled.div`
-//   width: 100%;
-//   height: 100vh;
-//   background-color: lightgreen;
-
-//   display: flex;
-// `
